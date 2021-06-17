@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 import '../initial_controller.dart';
 
 class FormWidget extends StatelessWidget {
-  const FormWidget({Key? key}) : super(key: key);
+  FormWidget({Key? key}) : super(key: key);
+
+  static final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     final _initialController = Get.find<InitialController>();
+
     _showDatePicker() {
       return showDatePicker(
               context: context,
@@ -61,28 +63,25 @@ class FormWidget extends StatelessWidget {
             ],
           ),
           SizedBox(height: 16),
-          GetBuilder<InitialController>(
-            builder: (controller) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.clear_outlined),
-                  label: Text('Limpar'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      controller.insert();
-                    }
-                  },
-                  icon: Icon(Icons.save),
-                  label: Text('Salvar'),
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.clear_outlined),
+                label: Text('Limpar'),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _initialController.insert();
+                  }
+                },
+                icon: Icon(Icons.save),
+                label: Text('Salvar'),
+              ),
+            ],
           ),
-
         ],
       ),
     );
