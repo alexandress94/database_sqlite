@@ -1,6 +1,5 @@
 import 'package:database_sqlite/app/data/models/todo_model.dart';
 import 'package:database_sqlite/app/data/repository/todo_repository.dart';
-import 'package:database_sqlite/app/modules/initial/local_widgets/todo_datails_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +25,8 @@ class InitialController extends GetxController {
     update(['date']);
   }
 
+  String get dateTimeNow => DateFormat('dd/MM/yyy').format(DateTime.now());
+
   String get getSelectedDateFormat => _dateTime;
 
   // Obtem todos os dados
@@ -45,13 +46,19 @@ class InitialController extends GetxController {
     clearField();
   }
 
+  // Atualiza os dados.
+  Future<void> updateTodo(TodoModel todo) async {
+    // Opcional
+    // TodoModel todo =
+    //     TodoModel(title: textController.text, date: getSelectedDateFormat);
+
+    await repository.update(todo);
+    query();
+  }
+
   void clearField() {
     // Limpa os campos.
     textController.text = "";
-    selectedDate = getSelectedDateFormat;
-  }
-
-  void getDataTyped(){
-    
+    selectedDate = dateTimeNow;
   }
 }

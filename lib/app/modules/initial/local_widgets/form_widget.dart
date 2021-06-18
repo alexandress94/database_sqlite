@@ -24,7 +24,8 @@ class FormWidget extends StatelessWidget {
           if (date == null) {
             return;
           }
-          _initialController.selectedDate = DateFormat('dd/MM/yyy').format(date);
+          _initialController.selectedDate =
+              DateFormat('dd/MM/yyy').format(date);
         },
       );
     }
@@ -34,7 +35,6 @@ class FormWidget extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
-            
             textInputAction: TextInputAction.done,
             controller: _initialController.textController,
             keyboardType: TextInputType.name,
@@ -81,8 +81,8 @@ class FormWidget extends StatelessWidget {
                     _initialController.insert();
                   }
                 },
-                icon: Icon(Icons.save),
-                label: Text('Salvar'),
+                icon: Icon(Icons.add),
+                label: Text('Inserir'),
               ),
             ],
           ),

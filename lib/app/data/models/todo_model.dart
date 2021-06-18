@@ -1,5 +1,5 @@
 class TodoModel {
-  int?    id;
+  int? id;
   String? title;
   String? date;
 
@@ -9,18 +9,18 @@ class TodoModel {
     this.date,
   });
 
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     var map = {
-      'id':     this.id,
-      'title':  this.title,
-      'date':   this.date,
+      'id': this.id,
+      'title': this.title,
+      'date': this.date,
     };
     return map;
   }
 
-  TodoModel.fromMap(Map<String, dynamic> map){
-    id      = map['id'];
-    title   = map['title'];
-    date    = map['date'];
+  TodoModel.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    title = map['title'];
+    date = map['date'];
   }
 }
