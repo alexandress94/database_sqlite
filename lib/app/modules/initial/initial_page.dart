@@ -18,6 +18,7 @@ class InitialPage extends StatelessWidget {
       body: Column(
         children: [
           SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
             child: FormWidget(),
           ),
           Obx(() {

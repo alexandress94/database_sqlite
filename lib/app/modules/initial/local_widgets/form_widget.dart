@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../initial_controller.dart';
 
 class FormWidget extends StatelessWidget {
@@ -23,7 +24,7 @@ class FormWidget extends StatelessWidget {
           if (date == null) {
             return;
           }
-          _initialController.selectedDate = date;
+          _initialController.selectedDate = DateFormat('dd/MM/yyy').format(date);
         },
       );
     }
@@ -33,6 +34,7 @@ class FormWidget extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            
             textInputAction: TextInputAction.done,
             controller: _initialController.textController,
             keyboardType: TextInputType.name,
@@ -67,7 +69,9 @@ class FormWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  _initialController.clearField();
+                },
                 icon: Icon(Icons.clear_outlined),
                 label: Text('Limpar'),
               ),

@@ -9,7 +9,7 @@ class InitialController extends GetxController {
   // Instância de variavéis.
   final TodoRepository repository;
   final textController = TextEditingController();
-  DateTime _dateTime = DateTime.now();
+  String _dateTime = DateFormat('dd/MM/yyy').format(DateTime.now());
   RxList<TodoModel> listTodoModels = <TodoModel>[].obs;
   // Contrutor
   InitialController({required this.repository});
@@ -21,12 +21,12 @@ class InitialController extends GetxController {
     super.onReady();
   }
 
-  set selectedDate(DateTime date) {
+  set selectedDate(String date) {
     _dateTime = date;
     update(['date']);
   }
 
-  String get getSelectedDateFormat => DateFormat('dd/MM/yyy').format(_dateTime);
+  String get getSelectedDateFormat => _dateTime;
 
   // Obtem todos os dados
   Future<void> query() async {
@@ -46,7 +46,12 @@ class InitialController extends GetxController {
   }
 
   void clearField() {
+    // Limpa os campos.
     textController.text = "";
-    _dateTime = DateTime.now();
+    selectedDate = getSelectedDateFormat;
+  }
+
+  void getDataTyped(){
+    
   }
 }
