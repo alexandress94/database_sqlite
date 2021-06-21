@@ -1,93 +1,90 @@
-import 'package:database_sqlite/app/data/models/todo_model.dart';
 import 'package:database_sqlite/app/modules/initial/initial_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AlertDialogWidget extends StatelessWidget {
-  final TodoModel todos;
-  final _formKey = GlobalKey<FormState>();
-  AlertDialogWidget({Key? key, required this.todos}) : super(key: key);
+  final _initialController = Get.find<InitialController>();
+  final _keyForm = GlobalKey<FormState>();
+  final String title;
+  final String action;
+  final String close;
+  final IconData iconAction;
+  final IconData iconClose;
+  final Function() onPressed;
+
+  AlertDialogWidget({
+    Key? key,
+    required this.title,
+    required this.action,
+    required this.close,
+    required this.iconAction,
+    required this.iconClose,
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _initialController = Get.find<InitialController>();
-
-    _showDatePicker() {
-      return showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now().subtract(Duration(days: 365)),
-              lastDate: DateTime.now().add(Duration(days: 365)))
-          .then(
-        (date) {
-          // Caso não seja selecionado nenhuma data, sairá da função.
-          if (date == null) {
-            return;
-          }
-          _initialController.selectedDate =
-              DateFormat('dd/MM/yyy').format(date);
-        },
-      );
-    }
-
     return AlertDialog(
-      title: Text('Atualizar dados'),
+      title: Text(title),
       content: SingleChildScrollView(
         child: Form(
-          key: _formKey,
+          key: _keyForm,
           child: Column(
             children: [
               TextFormField(
-                textInputAction: TextInputAction.done,
                 controller: _initialController.textController,
-                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: 'Descrição',
+                  icon: Icon(Icons.create),
+                ),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Digite uma descrição';
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  icon: Icon(Icons.create),
-                  hintText: todos.id.toString(),
-                ),
               ),
               SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Selecione uma data'),
+                  Text('Data'),
                   GetBuilder<InitialController>(
                     id: 'date',
-                    builder: (controller) => TextButton.icon(
-                      onPressed: _showDatePicker,
-                      label: Text(controller.getSelectedDateFormat),
-                      icon: Icon(Icons.arrow_drop_down),
-                    ),
+                    builder: (controller) {
+                      return TextButton.icon(
+                        onPressed: () {
+                          _showDatePicker(context);
+                        },
+                        icon: Icon(Icons.arrow_drop_down),
+                        label: Text(controller.getSelectedDateFormat),
+                      );
+                    },
                   ),
                 ],
               ),
               SizedBox(height: 16),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton.icon(
-                    icon: Icon(Icons.subdirectory_arrow_left),
-                    label: Text('Sair'),
+                  TextButton.icon(
                     onPressed: () {
                       Get.back();
                     },
+                    icon: Icon(iconClose),
+                    label: Text(close),
                   ),
-                  ElevatedButton.icon(
-                    icon: Icon(Icons.save),
-                    label: Text('Salvar'),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _initialController.updateTodo(todos);
-                        Get.back();
-                      }
-                    },
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: onPressed,
+                      icon: Expanded(child: Icon(iconAction)),
+                      label: FittedBox(
+                        child: Text(action),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -96,5 +93,20 @@ class AlertDialogWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Exibir o calendário
+  _showDatePicker(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(Duration(days: 365)),
+      lastDate: DateTime.now(),
+    ).then((date) {
+      if (date == null) {
+        return;
+      }
+      _initialController.selectedDate = DateFormat('dd/MM/yyy').format(date);
+    });
   }
 }

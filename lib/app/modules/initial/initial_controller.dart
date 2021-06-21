@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InitialController extends GetxController {
+class InitialController extends GetxController
+    with StateMixin<List<TodoModel>> {
   // Instância de variavéis.
   final TodoRepository repository;
   final textController = TextEditingController();
@@ -25,15 +26,25 @@ class InitialController extends GetxController {
     update(['date']);
   }
 
+  // Obtendo data atual com formatação "dd/mm/yyyy"
   String get dateTimeNow => DateFormat('dd/MM/yyy').format(DateTime.now());
 
+  // Obtendo data selecionada pelo usuário.
   String get getSelectedDateFormat => _dateTime;
 
   // Obtem todos os dados
   Future<void> query() async {
+    // Status de carregamento
+    change([], status: RxStatus.loading());
     List<Map<String, dynamic>> todos = await repository.query();
-    listTodoModels.value =
-        todos.map((data) => TodoModel.fromMap(data)).toList();
+    if (listTodoModels.isEmpty) {
+      // Se TodoModel for vazio
+      change([], status: RxStatus.empty());
+    } else {
+      listTodoModels.value =
+          todos.map((data) => TodoModel.fromMap(data)).toList();
+      change([], status: RxStatus.success());
+    }
   }
 
   // Inserir os dados
@@ -49,9 +60,6 @@ class InitialController extends GetxController {
   // Atualiza os dados.
   Future<void> updateTodo(TodoModel todo) async {
     // Opcional
-    // TodoModel todo =
-    //     TodoModel(title: textController.text, date: getSelectedDateFormat);
-
     await repository.update(todo);
     query();
   }

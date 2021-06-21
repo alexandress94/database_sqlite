@@ -74,9 +74,10 @@ class DatabaseHelper {
   // Atualiza registro pelo id
   Future<int> update(TodoModel todo) async {
     Database db = await instance.database;
-    print('função update');
     int result = await db.update(_table, todo.toMap(),
-        where: '$_columnId = ?', whereArgs: [todo.id]);
+        where: "$_columnId = ?", whereArgs: [todo.id]);
+
+    print('função update $result');
     return result;
   }
 
