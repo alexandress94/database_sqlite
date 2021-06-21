@@ -38,7 +38,9 @@ class SuccessWidget extends StatelessWidget {
             ),
             title: Text(todos.title.toString()),
             subtitle: Text(todos.date.toString()),
-            trailing: IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
+            trailing: IconButton(onPressed: () {
+              _initialController.updateTodo(todos);
+            }, icon: Icon(Icons.delete)),
           );
         },
       ),
@@ -56,7 +58,7 @@ class SuccessWidget extends StatelessWidget {
           iconAction: Icons.save,
           iconClose: Icons.close,
           onPressed: () {
-            _initialController.update(state);
+            _initialController.updateTodo();
           },
         );
       },
