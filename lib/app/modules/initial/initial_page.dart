@@ -16,38 +16,34 @@ class InitialPage extends GetView<InitialController> {
         title: Text('CRUD SQLite'),
       ),
       body: controller.obx(
-        (state) => SuccessWidget(
-          state: state!,
-        ),
+        (state) => SuccessWidget(),
         onEmpty: OnEmptyWidget(),
         onLoading: OnLoadingWidget(),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          if (controller.listTodoModels.isEmpty) {
-            _showDialog(context);
-          }
+          controller.insert();
         },
       ),
     );
   }
 
-  _showDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext _) {
-        return AlertDialogWidget(
-          title: 'CADASTRAR',
-          action: 'CONFIRMAR',
-          close: 'VOLTAR',
-          iconAction: Icons.add,
-          iconClose: Icons.subdirectory_arrow_left,
-          onPressed: (){
-            controller.insert();
-          },
-        );
-      },
-    );
-  }
+  // _showDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext _) {
+  //       return AlertDialogWidget(
+  //         title: 'CADASTRAR',
+  //         action: 'CONFIRMAR',
+  //         close: 'VOLTAR',
+  //         iconAction: Icons.add,
+  //         iconClose: Icons.subdirectory_arrow_left,
+  //         onPressed: (){
+  //           controller.insert();
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 }

@@ -4,13 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InitialController extends GetxController
-    with StateMixin<List<TodoModel>> {
+class InitialController extends GetxController with StateMixin<List<TodoModel>> {
   // Instância de variavéis.
-  final TodoRepository repository;
-  final textController = TextEditingController();
-  String _dateTime = DateFormat('dd/MM/yyy').format(DateTime.now());
-  RxList<TodoModel> listTodoModels = <TodoModel>[].obs;
+  final TodoRepository              repository;
+  final textController              = TextEditingController();
+  String _dateTime                  = DateFormat('dd/MM/yyy').format(DateTime.now());
+  RxList<TodoModel> listTodoModels  = <TodoModel>[].obs;
   // Contrutor
   InitialController({required this.repository});
 
@@ -21,6 +20,7 @@ class InitialController extends GetxController
     super.onReady();
   }
 
+  // setando a data selecionada.
   set selectedDate(String date) {
     _dateTime = date;
     update(['date']);
@@ -34,38 +34,39 @@ class InitialController extends GetxController
 
   // Obtem todos os dados
   Future<void> query() async {
-    // Status de carregamento
+    // Exibe widget de carregamento
     change([], status: RxStatus.loading());
+    // obtendo os dados da instância da sentença 
     List<Map<String, dynamic>> todos = await repository.query();
-    if (listTodoModels.isEmpty) {
-      // Se TodoModel for vazio
-      change([], status: RxStatus.empty());
-    } else {
-      listTodoModels.value =
-          todos.map((data) => TodoModel.fromMap(data)).toList();
-      change([], status: RxStatus.success());
-    }
+    // percorre os dados obtidos e adiciona o valor ao "listTodoModels"
+    listTodoModels.value = todos.map((data) => TodoModel.fromMap(data)).toList();
+    // Se "listTodoModels" for vazio, exibe um widget personalizado
+    // Caso não seja vazio exibe um widget com as listas.
+    listTodoModels.isEmpty
+        ? change([], status: RxStatus.empty())
+        : change([], status: RxStatus.success());    
   }
 
   // Inserir os dados
   Future<void> insert() async {
-    await repository.insert(
-        TodoModel(title: textController.text, date: getSelectedDateFormat));
+    await repository.insert(TodoModel(
+        title: 'TESTANDO INSERT' /*textController.text*/,
+        date: '21/06/2021' /*getSelectedDateFormat*/));
     // Chamando o método query para atualizar a lista "listTodoModels"
     query();
+
     // Método para limpar campo.
     clearField();
   }
 
-  // Atualiza os dados.
+  // Atualiza um dado da lista.
   Future<void> updateTodo(TodoModel todo) async {
-    // Opcional
     await repository.update(todo);
     query();
   }
 
+  // Limpa os campos.
   void clearField() {
-    // Limpa os campos.
     textController.text = "";
     selectedDate = dateTimeNow;
   }
