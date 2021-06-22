@@ -71,20 +71,26 @@ class AlertDialogWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton.icon(
+                    icon: Icon(
+                      iconClose,
+                      color: Colors.red[300],
+                    ),
+                    label: Text(
+                      close,
+                    ),
                     onPressed: () {
                       Get.back();
                     },
-                    icon: Icon(iconClose),
-                    label: Text(close),
                   ),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: onPressed,
-                      icon: Expanded(child: Icon(iconAction)),
-                      label: FittedBox(
-                        child: Text(action),
-                      ),
+                  TextButton.icon(
+                    icon: Icon(
+                      iconAction,
+                      color: Colors.green[300],
                     ),
+                    label: Text(action),
+                    onPressed: () {
+                      if (_keyForm.currentState!.validate()) onPressed();
+                    },
                   ),
                 ],
               ),

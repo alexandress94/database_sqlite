@@ -23,27 +23,29 @@ class InitialPage extends GetView<InitialController> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          controller.insert();
+          controller.clearField();
+          _showDialog(context);
         },
       ),
     );
   }
 
-  // _showDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext _) {
-  //       return AlertDialogWidget(
-  //         title: 'CADASTRAR',
-  //         action: 'CONFIRMAR',
-  //         close: 'VOLTAR',
-  //         iconAction: Icons.add,
-  //         iconClose: Icons.subdirectory_arrow_left,
-  //         onPressed: (){
-  //           controller.insert();
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
+  _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext _) {
+        return AlertDialogWidget(
+          title: 'CADASTRAR',
+          action: 'ADD',
+          close: 'VOLTAR',
+          iconAction: Icons.add,
+          iconClose: Icons.subdirectory_arrow_left,
+          onPressed: () async {
+            await controller.insert();
+            Get.back();
+          },
+        );
+      },
+    );
+  }
 }

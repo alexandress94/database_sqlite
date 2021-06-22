@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class InitialController extends GetxController with StateMixin<List<TodoModel>> {
+class InitialController extends GetxController
+    with StateMixin<List<TodoModel>> {
   // Instância de variavéis.
-  final TodoRepository              repository;
-  final textController              = TextEditingController();
-  String _dateTime                  = DateFormat('dd/MM/yyy').format(DateTime.now());
-  RxList<TodoModel> listTodoModels  = <TodoModel>[].obs;
+  final TodoRepository repository;
+  late int selectedIndex;
+  final textController = TextEditingController();
+  String _dateTime = DateFormat('dd/MM/yyy').format(DateTime.now());
+  RxList<TodoModel> listTodoModels = <TodoModel>[].obs;
   // Contrutor
   InitialController({required this.repository});
 
@@ -36,22 +38,23 @@ class InitialController extends GetxController with StateMixin<List<TodoModel>> 
   Future<void> query() async {
     // Exibe widget de carregamento
     change([], status: RxStatus.loading());
-    // obtendo os dados da instância da sentença 
+    // obtendo os dados da instância da sentença
     List<Map<String, dynamic>> todos = await repository.query();
     // percorre os dados obtidos e adiciona o valor ao "listTodoModels"
-    listTodoModels.value = todos.map((data) => TodoModel.fromMap(data)).toList();
+    listTodoModels.value =
+        todos.map((data) => TodoModel.fromMap(data)).toList();
     // Se "listTodoModels" for vazio, exibe um widget personalizado
     // Caso não seja vazio exibe um widget com as listas.
     listTodoModels.isEmpty
         ? change([], status: RxStatus.empty())
-        : change([], status: RxStatus.success());    
+        : change([], status: RxStatus.success());
   }
 
   // Inserir os dados
   Future<void> insert() async {
-    await repository.insert(TodoModel(
-        title: 'TESTANDO INSERT' /*textController.text*/,
-        date: '21/06/2021' /*getSelectedDateFormat*/));
+    await repository.insert(
+      TodoModel(title: textController.text, date: getSelectedDateFormat),
+    );
     // Chamando o método query para atualizar a lista "listTodoModels"
     query();
 
@@ -60,8 +63,19 @@ class InitialController extends GetxController with StateMixin<List<TodoModel>> 
   }
 
   // Atualiza um dado da lista.
-  Future<void> updateTodo(TodoModel todo) async {
+  Future<void> updateTodo() async {
+    TodoModel todo = TodoModel(
+      id: selectedIndex,
+      title: textController.text,
+      date: getSelectedDateFormat,
+    );
     await repository.update(todo);
+    // Chamando o método query para atualizar a lista "listTodoModels"
+    query();
+  }
+
+  Future<void> delete(int id) async {
+    await repository.delete(id);
     query();
   }
 

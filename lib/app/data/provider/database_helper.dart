@@ -8,12 +8,12 @@ class DatabaseHelper {
   static final int _databaseVersion = 1;
 
   // Nome da tabela
-  static final String _table = 'todo';
+  static final String _table        = 'todo';
 
   // Nome da coluna da tabela TODO.
-  static final String _columnId = 'id';
-  static final String _columnTitle = 'title';
-  static final String _columnDate = 'date';
+  static final String _columnId     = 'id';
+  static final String _columnTitle  = 'title';
+  static final String _columnDate   = 'date';
 
   // Querey para alteração na estrutura da tabela.
   // ex: "ALTER TABLE $table ADD COLUMN $columnValue REAL NOT NULL"
