@@ -1,16 +1,4 @@
 # database_sqlite
 
-A new Flutter project.
+Utilizado organização em arquitetura MVC separando responsabilidades por camadas, implementado banco de dados SQLite, criado as funções de CRUD. Utilizado GetX para gerenciar o estado da aplicação e o fluxo de eventos para carregamento quando solicitar informações ao banco, quando não tiver registro e quando houver uma falha.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
